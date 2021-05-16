@@ -1,0 +1,75 @@
+@font-face {
+    font-family: TITOLO;
+    src: url('../fonts/titolo.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: PAR;
+    src: url('../fonts/morn.otf')  format('opentype');
+}
+
+@font-face {
+    font-family: H3;
+    src: url('../fonts/GOTHIC.TTF')  format('truetype');
+}
+
+.header img{
+    float: right;
+    width: 170px;
+    height: 180px;
+    background: #f8f8f8;
+}
+
+
+.h1_aboutus {
+    font-family: "TITOLO"; /* non prende i font, che palle*/
+    font-style: normal;
+    color: #000000;
+    font-size: 6vw;
+}
+
+
+.h3_aboutus {
+    font-family: "H3";
+    font-style: normal;
+    color: #000000;
+}
+
+
+.p_aboutus {
+    font-family: "PAR";
+    font-weight: bolder;
+    color: #000000;
+}
+
+
+.body_aboutus{  
+    background-image: url('../images/ali&andre.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+.ombra{
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    background-color: transparent;
+    
+  }
+  
+  .grid-item {
+    background-color: transparent;
+    border: 1px solid transparent;
+    font-size: 20px;
+    font-family: "PAR";
+    color: black;
+    font-weight: bolder;
+    text-align: justify;
+
+  }

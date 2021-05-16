@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>MTG - homepage</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Minerva Trading Group homepage">
+    <meta name="author" content="Alisia Maria Lupidi, Andrea Orlandi">
+    <link rel="shortcut icon" href="../static/images/logo.jpg"/>
+    
+    <link rel="stylesheet" href="../static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/CSS/bootstrap4-toggle.min.css">
+    <link rel="stylesheet" href="../static/CSS/style_homepage.css">
+    <script src="../static/JS/jquery-3.4.1.min.js"></script>
+    <script src="../static/JS/bootstrap.min.js"></script>
+    <script src="../static/JS/bootstrap4-toggle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+
+</head>
+<body class = "body_homepage">
+
+
+    <div class="d-flex flex_homepage p-3 flex-column">
+        <div class="container-fluid">
+            <div class = "header">
+                <img src = "../static/images/logo.jpg" />
+            </div>
+            <h1 class = "h1_homepage">Minerva Trading Group</h1>
+            <div style="border-top: 0.8px solid white"></div>
+            
+            <div class="grid-container" style=" padding-top: 20px; padding-bottom: 3px;">
+                <p class = "grid-item p_homepage"  style="justify-self: left;">Hi, welcome to our website.</p>
+                <ul class="grid-item" style="justify-self: right;">
+                    <li><a href="/portfolio">Join the platform</a></li>
+                    <li><a href="/target_modal_bootstrap">Login</a></li>
+                    <li><a href="#readme">Abstract</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <!-- CAROUSEL -->
+        <div id="demo" class="carousel slide" data-ride="carousel">
+            <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1"></li>
+                <li data-target="#demo" data-slide-to="2"></li>
+            </ul>
+            
+            <div class="carousel-inner"> <!-- The slideshow -->
+                <div class="carousel-item active">
+                    <img src="../static/images/vsc (1).png" alt="Los Angeles" class="img-fluid">
+                </div>
+                <div class="carousel-item">
+                    <img src="../static/images/vsc (2).png" class="img-fluid">
+                </div>
+                <div class="carousel-item">
+                    <img src="../static/images/vsc (3).png" alt="Los Angeles" class="img-fluid">
+                </div>
+            </div>
+            
+            <a class="carousel-control-prev" href="#demo" data-slide="prev"> <!-- Left and right controls: LI VOGLIAMO? E I COSI SOTTO? -->
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+        <!-- FINE CAROUSEL -->
+        <hr/>
+        <div style="border-top: 0.8px solid white"></div>
+        <hr/>
+        
+
+        <div class = "container-fluid">
+            <h3 id = "readme" class = "h3_homepage">READ ME</h3>
+            <p class = "p_homepage">
+                Qui ci va scritto il testo del read me. Per ora ci metto un pezzo di orgoglio e pregiudizio.
+                È una verità universalmente riconosciuta, che uno scapolo in possesso di un'ampia fortuna debba avere bisogno di una moglie.
+                Per quanto poco si possa sapere circa i sentimenti o i punti di vista di un uomo del genere al suo primo apparire nel vicinato,
+                questa verità è così saldamente fissata nelle menti delle famiglie
+                del circondario, da considerarlo di legittima proprietà di una o l'altra delle loro figlie
+            </p>
+        </div>
+
+        
+        <div class="grid-container" style=" padding-top: 20px; padding-bottom: 3px;">
+            
+            <a type="button" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "/about_us">About us</a>
+            <a type="button" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "https://github.com/Swerd99/minervatradinggroup">GitHub</a>
+
+        </div>
+
+    </div>
+</body>
+</html>

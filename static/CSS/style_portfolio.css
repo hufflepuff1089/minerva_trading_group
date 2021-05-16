@@ -1,0 +1,119 @@
+@font-face {
+    font-family: TITOLO;
+    src: url('../fonts/titolo.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: PAR;
+    src: url('../fonts/morn.otf')  format('opentype');
+}
+
+@font-face {
+    font-family: H3;
+    src: url('../fonts/GOTHIC.TTF')  format('truetype');
+}
+
+.header img{
+    float: left;
+    width: 70px;
+    height: 80px;
+    background: #000000;
+}
+
+.h1_portfolio {
+    font-family: "TITOLO"; /* non prende i font, che palle*/
+    font-style: normal;
+    color: #ffffff;
+    font-size: 6vw;
+}
+
+
+.h3_portfolio {
+    font-family: "PAR";
+    font-style: normal;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 25px;
+}
+
+
+.p_portfolio {
+    font-family: "PAR";
+    font-style: normal;
+    text-align: justify;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+
+.body_portfolio{
+    background-color: #000000;
+}
+
+
+
+
+#demo {
+    height: 400px;
+    width: 100%;
+    overflow: hidden;    
+}
+
+
+
+.carousel-inner > .carousel-item > .img-fluid, .carousel-inner > .item > a > img {
+    width: 100%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    background-color: transparent;
+    height: 100vh;
+}
+  
+.grid-item {
+background-color: transparent;
+border: 15px solid #272727;
+font-size: 20px;
+color: white
+}
+
+/*NAV BAR*/
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent;
+  }
+  
+  li { /*questo colora le barre*/
+    float: left;
+    border-right:1px solid #ffffff;
+  }
+  
+  li:last-child {
+    border-right: none;
+  }
+  
+  li a { /*testo nei blocchi*/
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: "PAR";
+    font-style: normal;
+    text-align: justify;
+    color: #ffffff;
+    font-size: 20px;
+  }
+  
+li a:hover:not(.active) {
+    color: #ffffff;
+}
+
+.btn:hover{
+    background-color: white !important;
+    color: black;
+    border-color: white;
+}
