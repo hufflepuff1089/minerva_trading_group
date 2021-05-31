@@ -1,3 +1,7 @@
+<!-- allinea readme-->
+<!-- rivedi spazi e metti justified in one paragraph il readme-->
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,6 +15,7 @@
     <link rel="stylesheet" href="../static/CSS/bootstrap.min.css">
     <link rel="stylesheet" href="../static/CSS/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="../static/CSS/style_homepage.css">
+    <script src="../static/JS/popper.min.js"></script>
     <script src="../static/JS/jquery-3.4.1.min.js"></script>
     <script src="../static/JS/bootstrap.min.js"></script>
     <script src="../static/JS/bootstrap4-toggle.min.js"></script>
@@ -19,13 +24,12 @@
 
 
 </head>
-<body class = "body_homepage">
+<body class = "body_homepage" > 
 
-
-    <div class="d-flex flex_homepage p-3 flex-column">
+    <div class="d-flex flex_homepage p-3 flex-column" id = "pageContent" style = "background-color: #000000 !important;">
         <div class="container-fluid">
             <div class = "header">
-                <img src = "../static/images/logo.jpg" />
+                <img src = "../static/images/logo.jpg"/>
             </div>
             <h1 class = "h1_homepage">Minerva Trading Group</h1>
             <div style="border-top: 0.8px solid white"></div>
@@ -33,31 +37,44 @@
             <div class="grid-container" style=" padding-top: 20px; padding-bottom: 3px;">
                 <p class = "grid-item p_homepage"  style="justify-self: left;">Hi, welcome to our website.</p>
                 <ul class="grid-item" style="justify-self: right;">
-                    <li><a href="/portfolio">Join the platform</a></li>
-                    <li><a href="/target_modal_bootstrap">Login</a></li>
+                    <li><a href="/sign_up" data-toggle="modal" data-target="#signin_form">Join the platform</a></li>        
+                    <li><a href="/login" data-toggle="modal" data-target="#login_form">Login</a></li>
                     <li><a href="#readme">Abstract</a></li>
+                    <!-- oppure href = "/portfolio"-->
                 </ul>
             </div>
         </div>
         
-        
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" style= "font-family: 'H3'; font-weight: bold; background-color: #970000; color:rgb(0, 0, 0); border-color: #8a0000;">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+            
         <!-- CAROUSEL -->
         <div id="demo" class="carousel slide" data-ride="carousel">
             <ul class="carousel-indicators">
                 <li data-target="#demo" data-slide-to="0" class="active"></li>
                 <li data-target="#demo" data-slide-to="1"></li>
                 <li data-target="#demo" data-slide-to="2"></li>
+                <li data-target="#demo" data-slide-to="3"></li>
             </ul>
             
             <div class="carousel-inner"> <!-- The slideshow -->
                 <div class="carousel-item active">
-                    <img src="../static/images/vsc (1).png" alt="Los Angeles" class="img-fluid">
+                    <img src="../static/images/banner.jpg" alt="banner" class="img-fluid">
                 </div>
                 <div class="carousel-item">
-                    <img src="../static/images/vsc (2).png" class="img-fluid">
+                    <img src="../static/images/carousel image (1).png" alt="img1" class="img-fluid">
                 </div>
                 <div class="carousel-item">
-                    <img src="../static/images/vsc (3).png" alt="Los Angeles" class="img-fluid">
+                    <img src="../static/images/carousel image (2).png" alt="img2" class="img-fluid">
+                </div>
+                <div class="carousel-item">
+                    <img src="../static/images/carousel image (3).png" alt="img3" class="img-fluid">
                 </div>
             </div>
             
@@ -74,25 +91,214 @@
         <hr/>
         
 
-        <div class = "container-fluid">
-            <h3 id = "readme" class = "h3_homepage">READ ME</h3>
-            <p class = "p_homepage">
-                Qui ci va scritto il testo del read me. Per ora ci metto un pezzo di orgoglio e pregiudizio.
-                È una verità universalmente riconosciuta, che uno scapolo in possesso di un'ampia fortuna debba avere bisogno di una moglie.
-                Per quanto poco si possa sapere circa i sentimenti o i punti di vista di un uomo del genere al suo primo apparire nel vicinato,
-                questa verità è così saldamente fissata nelle menti delle famiglie
-                del circondario, da considerarlo di legittima proprietà di una o l'altra delle loro figlie
+        <div class = "container-fluid" style = "background-color: #00000000;">
+            <h3 class = "h3_homepage" id = "readme" style= "color: white; font-weight: bolder !important; font-size: 25px; padding-top: 10px;">READ ME</h3>
+            <p class = "p_homepage" style = "padding-top: 15px;  padding-bottom: 20px;">
+                Per il progetto di LTW, il nostro gruppo ha creato una piattaforma di trading di criptovalute con moneta proprietaria - i SapienzaCoin.
+                Ci siamo divertiti molto a svilupparla perché abbiamo imparato da zero moltissime tecnologie e integrarle tutte in un unico prodotto è stato davvero soddisfacente.
             </p>
+            <p class = "p_homepage" style = "padding-bottom: 20px;">
+                Abbiamo strutturato il sito come un "GitHub dinamico", quindi: 
+                <br>&emsp;-&nbsp;&nbsp;al paragrafo&nbsp;<a href="#technologies" style = "font-style: italic; color: white">Technologies</a>&nbsp; trovate una descrizione dettagliata delle tecnologie usate con link ad esempi;
+                <br>&emsp;-&nbsp;&nbsp;al bottone&nbsp;<a href="#github" style = "font-style: italic; color: white">GitHub</a>&nbsp; trovate la repo con il codice;
+                <br>&emsp;-&nbsp;&nbsp;al bottone&nbsp;<a href="#about_us" style = "font-style: italic; color: white">About us</a>&nbsp; trovate informazioni su noi sviluppatori;
+            
+            </p>
+
+            <div style="border-top: 0.8px solid white; width:350px; margin-right: auto; margin-left: auto;"></div>
+            <br>
+            <!-- TECHNOLOGIES -->
+            <h3 id = "technologies" class = "h3_homepage" style= "font-size: 25px; padding-top: 10px; padding-bottom: 20px; font-weight: bolder !important;">TECHNOLOGIES&nbsp;&nbsp;≈&nbsp;&nbsp;3k locs</h3>
+            <h3 class = "h3_homepage" style="font-size: 20px; padding-bottom: 15px;">&emsp;1. Front-end:</h3>
+            
+            <!-- HTML + CSS -->
+            <p  class = "p_homepage" id = "html&css">&emsp;&emsp;&emsp;<span class="badge h3_homepage" style= "font-size: 20px; background-color: rgb(255, 60, 0);">HTML</span>
+                &nbsp; + &nbsp;<span class="badge h3_homepage" style= "font-size: 20px; background-color: rgb(0, 89, 255);">CSS</span>
+                &nbsp;&nbsp;==&nbsp;&nbsp;1168 locs per HTML + 628 locs per CSS
+                <img src="../static/images/html_css.jpg" class="img-fluid" style= "width: 350px; height: 220px; float:right;">
+            </p>
+            <p class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; margin-left: 1.7cm; padding-bottom: 40px;">
+                Abbiamo usato HTML per la struttura della pagina web e CSS per la personalizzazione dei contenuti.
+                In totale abbiamo creato 3 pagine principali: homepage, portfolio e about_us. Ogni pagina è organizzata
+                con la propria coppia di file HTML e CSS e per strutture particolarmente complicate come il grafico di
+                portfolio, abbiamo creato appositamente un coppia HTML - CSS per gestire quel particolare elemento.
+            </p>
+
+            <!-- JAVASCRIPT + JQUERY-->
+            <p  class = "p_homepage" id = "javascript" style = "color: white;">&emsp;&emsp;&emsp;
+                <span class="badge h3_homepage" style= "font-size: 20px; color:black; background-color: rgb(255, 230, 0);">JAVASCRIPT</span>
+                &nbsp; + &nbsp;<span class="badge h3_homepage" style= "color: black; font-size: 20px; background-color: rgb(153, 228, 102);">JQUERY</span>
+                &nbsp;&nbsp;==&nbsp;&nbsp;569 locs
+ 
+            </p>
+            <p  class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; padding-bottom: 40px; margin-right: 1cm;">
+                <img src="../static/images/javascript_logo.png" class="img-fluid" style= "width: 140px; height: 140px; float:left; margin-left: 2cm;" >
+                <img src="../static/images/jquery_logo.jpg" class="img-fluid" style= "width: 170px; height: 150px; float:left; margin-left: 0.5cm;" >
+                La maggior parte del codice JavaScript è stato scritto per il grafico e per le tabelle nella pagina di portfolio.
+                Ognuno di loro ha associato un file Javascript che si occupa dell'eleborazione dei dati del DB o delle crypto e della
+                costruzione delle tabelle e del grafico in base ai dati estrapolati. In aggiunta a questo, alla fine del body delle pagine HTML
+                ci sono degli script JQuery, Ajax e JavaScript che gestiscono eventi e animazioni dinamiche.
+            </p>
+              
+            <!-- BOOSTRAP -->
+            <p  class = "p_homepage" id = "bootstrap" style = "padding-top: 30px;">&emsp;&emsp;&emsp;<span class="badge h3_homepage" style= "font-size: 20px; color:rgb(255, 255, 255); background-color: rgb(111, 34, 255);">BOOTSTRAP</span>
+            </p>
+            <p  class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; padding-bottom: 40px; margin-left: 1.7cm;">
+                <img src="../static/images/boostrap_logo.jpg" class="img-fluid" style= "width: 160px; height: 150px; float:right; margin-right: 0.5cm; margin-left: 0.3cm" >
+                Escludendo le tabelle e il grafico di portfolio, tutti gli oggetti nel nostro sito sono oggetti Bootstrap.
+                Questo garantisce un sito responsive e un'alta retrocombatibilità con CSS, JS e JQ, che abbiamo sfruttato per personalizzare
+                la grafica dell'elemento Bootstrap in accordo con lo stile del sito.
+                Alcuni elementi utilizzati sono puramente statici - come i flex, le grid e i container che incapsulano il sito - mentre altri
+                possiedono anche una parte dinamica - come il carosello all'inizio della homepage e i vari modal nella homepage e in portfolio.
+            </p>
+
+
+            <h3 class = "h3_homepage" style="font-size: 20px; padding-top: 20px; padding-bottom: 15px;">&emsp;2. Back-end:</h3>
+            <!--SERVER-->
+            <p  class = "p_homepage" id = "server">&emsp;&emsp;&emsp;<span class="badge h3_homepage" style= "font-size: 20px; background-color: rgb(65, 65, 65);">FLASK</span>
+                &nbsp; + &nbsp;<span class="badge h3_homepage" style= "font-size: 20px; color: black; background-color: rgb(121, 121, 121);">PYTHON</span>
+                &nbsp;&nbsp;==&nbsp;&nbsp;432 locs
+            </p>
+            <p id = "back-end" class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; margin-left: 1.7cm; padding-bottom: 40px;">
+                <img src="../static/images/python_logo.jpg" class="img-fluid" style= "width: 180px; height: 180px; float:right; margin-right: 0.5cm;">
+                <img src="../static/images/flask_logo.png" class="img-fluid" style= "width: 150px; height: 180px; float:right; margin-left: 0.2cm;">
+                Python è il linguaggio di scripting back-end che abbiamo deciso di utilizzare per il server e per interagire con il database.
+                Il server consiste in un file Python che utilizza la libreria Flask per interagire con il front-end. In questo file viene coordinata
+                tutta la logica del sito, ci sono le richieste e modifiche al database e le rotte verso le varie pagine.
+                Le rotte sono adornate da un decoratore che controlla l'autenticazione dell'utente e la correttezza della sua Apikey. Se il controllo va
+                a buon fine allora l'utente può entrare nel proprio portfolio, altrimenti usiamo un Flash di errore e rindirizziamo all'homepage.
+                Per garantire la sicurezza dei nostri utenti, abbiamo implementato il protocollo SALT in cui generiamo uno SHA256 basato sulla cifratura
+                dei cookie dell'utente.
+            </p>
+
+            <!-- DATABASE-->
+            <p  class = "p_homepage" id = "database">&emsp;&emsp;&emsp;<span class="badge h3_homepage" style= "font-size: 20px; color:white; background-color:  rgb(145, 0, 0);">SQLALCHEMY</span>
+                
+            </p>
+            <p  class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; padding-bottom: 50px; margin-left: 1.7cm; margin-right: 0.5cm;">
+                <img src="../static/images/sqlalchemy_logo.png" class="img-fluid" style= "width: 250px; height: 140px; float:left;" >
+                SQLAlchemy è un DB toolkit per Python, che usa un database relazionale SQL. Abbiamo 3 tabelle: User, Storico e Moneta.
+                Ogni sign up popola il DB con un nuovo User e a questo vengono associati tramite foreign key una tabella Storico con lo storico
+                delle proprie transazioni e una tabella globale Moneta con i valori di mercato delle crypto.
+                Supportiamo le operazioni di buy e sell che possono essere chiamate dai modal in nella pagina di portfolio e modificano le tabelle Storico e il wallet dell'utente.
+            </p>
+
+
+            <!-- FINANCE-->
+            <p  class = "p_homepage" id = "finance">&emsp;&emsp;&emsp;
+                <span class="badge h3_homepage" style= "font-size: 20px; color:black; background-color:  rgb(230, 136, 73);">D3JS</span>
+                &emsp;<span class="badge h3_homepage" style= "font-size: 20px; color: white; background-color: rgb(218, 0, 152);">TECHAN</span>
+                &emsp;<span class="badge h3_homepage" style= "font-size: 20px; color: white; background-color: rgb(0, 60, 255);">COINMARKETCAP</span>
+            </p>
+            <p class = "p_homepage" style = "background-color: rgba(100, 148, 237, 0); color:white; padding-bottom: 40px; margin-left: 1.7cm; margin-right: 0.5cm;">
+                <img src="../static/images/coinmarketcap_logo.png" class="img-fluid" style= "width: 250px; height: 160px; float:right; margin-right: 0.5cm; margin-left: 0.3cm;">
+                <img src="../static/images/techan_logo.jpg" class="img-fluid" style= "width: 150px; height: 160px; float:right; margin-left: 0.3cm;">
+                <img src="../static/images/d3JS_logo.jpg" class="img-fluid" style= "width: 150px; height: 160px; float:right; margin-left: 0.5cm;">
+
+                Le tabelle e il grafico in portfolio sono basati su dati reali, presi da CoinMarketCap - una piattaforma di scambio di criptovalute.
+                Techan è una libreria di algoritmi finanziari che elebaora i dati del mercato e restituisce i dati per formare il candlestick, l'OHLC,
+                l'ATR e il volume graph che vengono poi plottati da D3JS e forniti di funzioni di zooming e modifica live. 
+            </p>
+
+
         </div>
 
-        
+        <div style="border-top: 0.8px solid white;"></div>
+            
         <div class="grid-container" style=" padding-top: 20px; padding-bottom: 3px;">
             
-            <a type="button" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "/about_us">About us</a>
-            <a type="button" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "https://github.com/Swerd99/minervatradinggroup">GitHub</a>
+            <a type="button" id = "about_us" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "/about_us">About us</a>
+            <a type="button" id = "github" class="btn btn-outline-light grid-item border-light" style="justify-self: center;" href = "https://github.com/hufflepuff1089/minerva_trading_group">GitHub</a>
 
         </div>
 
+    </div>
+
+    <!-- Modal login-->
+    <div class="modal fade" id="login_form" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+        <div class="modal-dialog " role="document" >
+            <div class="modal-content" style = "background-color: black; color: #aaaaaa;">
+                <div class="modal-header">
+                    <p class="modal-title h5_homepage" id="modal_label" style="padding-left: 140px;" >Welcome back</p>
+                    <button type="button" style= "color: #ffffff; justify-self: right; background-color: transparent;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <form action="/login" method="POST">
+                
+                    <div class="form-group">
+                        <label></label>
+                        <input type="text" class="form-control text_form" id="username" name= "username" aria-describedby="emailHelp" placeholder="Enter your username here"
+                        style="background-color: transparent; ">
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group">
+                        <input type="password" class="form-control text_form" id="password" name="password" aria-describedby="passwordHelp" placeholder="Enter your password here"
+                        style="background-color: transparent; border: 1px, solid, #aaaaaa;">
+                    </div>
+             
+                    <div class="modal-footer" style=" justify-content: center;"> 
+                        <button type="submit" class="btn btn-outline-light border-light">Log in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Modal signin-->
+    <div class="modal fade" id="signin_form" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" >
+            <div class="modal-content" style = "background-color: black; color: #aaaaaa;">
+                <div class="modal-header">
+                    <p class="modal-title h5_homepage" id="modal_label" style="padding-left: 240px;">Thank you for joining us!</p>
+                    <button type="button" style= "color: #ffffff; justify-self: right; background-color: transparent;" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="/sign_up" method="POST"> 
+              
+                    <div class="form-group" style="padding-top: 20px; padding-bottom: 10px;">
+                        <input type=" text" class="form-control text_form" id="username" name= "username" aria-describedby="usernameHelp" placeholder="Enter your username here"
+                                style="background-color: transparent; border-color: transparent;">
+                        <small id="usernameHelp" class="p_homepage" style= "font-size: 13px; color: #aaaaaa; padding-left: 10px;">Constraints: max lenght = 32 chars</small>
+                    </div>
+
+                    <div class="form-group" style="padding-top: 10px; padding-bottom: 10px;">
+                        <input type="email text" class="form-control text_form" id="email" name = "email" aria-describedby="emailHelp" placeholder="Enter your email here"
+                                style="background-color: transparent; border-color: transparent;">
+                        <small id="emailHelp" class="p_homepage" style= "font-size: 13px; color: #aaaaaa; padding-left: 10px;">We'll never share your email with anyone else.</small>
+                    </div>
+
+                    
+                    <div class="form-group" style="padding-top: 10px; padding-bottom: 10px;">
+                        <input type="password" class="form-control text_form" id="password" name="password" aria-describedby="passwordHelp" placeholder="Enter your password here"
+                                style="background-color: transparent; border-color: transparent;">
+                        <small id="passwordHelp" class="p_homepage" style= "font-size: 13px; color: #aaaaaa; padding-left: 10px;">Choose a strong password: at least 6 characters, capital letters and numbers are allowed.</small>
+                    </div>
+
+                    <div class="form-group" style="padding-top: 10px;">
+                        <input type=" text" class="form-control text_form" id="capital" name = "capital" aria-describedby="capitalHelp" placeholder="Enter the value of your starting capital"
+                                style="background-color: transparent; border-color: transparent;">
+                        <small id="capitalHelp" class="p_homepage" style= "font-size: 13px; color: #aaaaaa; padding-left: 10px;">Constraints: value must be in Euro</small>
+                    </div>
+
+                    <div class="form-group" style="">
+                        <small class="p_homepage" style= "font-size: 13px; color: #ffffff; padding-left: 10px;">We will import your existing portfolio from your bank account.</small>
+                    </div>
+                    
+                    <div class="modal-footer" style=" justify-content: center;"> 
+                            
+                            <button type="submit" name="submit" value="Submit" class="btn btn-outline-light border-light">Join</button>
+                  
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>

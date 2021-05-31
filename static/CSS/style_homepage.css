@@ -1,114 +1,174 @@
 @font-face {
     font-family: TITOLO;
     src: url('../fonts/titolo.ttf')  format('truetype');
-}
-
-@font-face {
+  }
+  
+  @font-face {
     font-family: PAR;
     src: url('../fonts/morn.otf')  format('opentype');
-}
-
-@font-face {
+  }
+  
+  @font-face {
     font-family: H3;
     src: url('../fonts/GOTHIC.TTF')  format('truetype');
+  }
+  
+
+
+  
+
+.modal-backdrop{
+  background-color: rgb(100, 100, 100);
 }
 
+
+  
+
+.text_form {
+  border: none;
+  font-size: 17px;
+  color: white;
+  font-family: "PAR";
+  font-style: normal;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #aaaaaa;
+  font-weight: bold !important;
+
+}
+
+
+.form-control:focus {
+  border-color: #aaaaaa;
+  color: #aaaaaa;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #aaaaaa;
+  font-weight: bold !important;
+}
+
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgb(255, 255, 255);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #ffffff31;
+  -webkit-box-shadow: inset 0 0 6px rgba(90,90,90,0.7);
+}
+  
+
+
 .header img{
-    float: right;
-    width: 170px;
-    height: 180px;
-    background: #000000;
+  float: right;
+  width: 170px;
+  height: 180px;
+  background: #000000;
 }
 
 .h1_homepage {
-    font-family: "TITOLO"; /* non prende i font, che palle*/
-    font-style: normal;
-    color: #ffffff;
-    font-size: 6vw;
+  font-family: "TITOLO"; /* non prende i font, che palle*/
+  font-style: normal;
+  color: #ffffff;
+  font-size: 6vw;
 }
 
 
 .h3_homepage {
-    font-family: "PAR";
-    font-style: normal;
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 25px;
+  font-family: "PAR";
+  font-style: normal;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 25px;
+}
+
+.h5_homepage {
+  font-family: "PAR";
+  font-style: normal;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 25px;
 }
 
 
 .p_homepage {
-    font-family: "PAR";
-    font-style: normal;
-    text-align: justify;
-    color: #ffffff;
-    font-size: 20px;
+  font-family: "PAR";
+  font-style: normal;
+  text-align: justify;
+  color: #ffffff;
+  font-size: 20px;
 }
 
 
 .body_homepage{
-    background-color: #000000;
+  background-color: #000000;
 }
 
 
 .flex_homepage{
-    background-color: #000000;
+  background-color: #000000;
 }
 
 
 #demo {
-    height: 400px;
-    width: 100%;
-    overflow: hidden;    
+  height: 400px;
+  width: 100%;
+  overflow: hidden;    
 }
 
 
 
 .carousel-inner > .carousel-item > .img-fluid, .carousel-inner > .item > a > img {
-    width: 100%;
+  width: 100%;
 }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
-    background-color: transparent;
-  }
-  
-  .grid-item {
-    background-color: transparent;
-    border: 1px solid transparent;
-    font-size: 20px;
-  }
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: transparent;
+}
+
+.grid-item {
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-size: 20px;
+}
 
 /*NAV BAR*/
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: transparent;
-  }
-  
-  li { /*questo colora le barre*/
-    float: left;
-    border-right:1px solid #ffffff;
-  }
-  
-  li:last-child {
-    border-right: none;
-  }
-  
-  li a { /*testo nei blocchi*/
-    padding: 14px 16px;
-    text-decoration: none;
-    font-family: "PAR";
-    font-style: normal;
-    text-align: justify;
-    color: #ffffff;
-    font-size: 20px;
-  }
-  
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+li { /*questo colora le barre*/
+  float: left;
+  border-right:1px solid #ffffff;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a { /*testo nei blocchi*/
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: "PAR";
+  font-style: normal;
+  text-align: justify;
+  color: #ffffff;
+  font-size: 20px;
+}
+
 li a:hover:not(.active) {
-    color: #ffffff;
+  color: #ffffff;
 }

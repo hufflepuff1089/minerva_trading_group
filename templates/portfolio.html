@@ -1,10 +1,12 @@
-<!-- aggiusta hovering fottuto bottone del cazzo + hovering immagine minerva per home + grafici che si espandono se vuoi-->
+<!-- metti bottone per gli ordini che poi compaiono su wallet (db)-->
+<!-- my wallet c'è portfolio che carichi con funzione dal bd e display dei tuoi dati, sopra ci sono le mie transazioni-->
+<!-- aggiusta total funzione jquery-->
 
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title> user_x - portfolio</title> <!-- qui metti in modo che si può vedere il nome utente al posto di user_x-->
+    <title> {{ user.username }} - portfolio</title> <!-- qui metti in modo che si può vedere il nome utente al posto di user_x-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="user_x portfolio">
@@ -14,50 +16,368 @@
     <link rel="stylesheet" href="../static/CSS/bootstrap.min.css">
     <link rel="stylesheet" href="../static/CSS/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="../static/CSS/style_portfolio.css">
+    <link rel="stylesheet" href="../static/CSS/style_graph.css">
     <script src="../static/JS/jquery-3.4.1.min.js"></script>
     <script src="../static/JS/bootstrap.min.js"></script>
     <script src="../static/JS/bootstrap4-toggle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="../static/techan/techan.js"></script>
 
 
 </head>
 <body class = "body_portfolio">
 
-
-    <div class="container-fluid portfolio"> <!-- vedi se funziona senza flex-->
-        <div class = "header">
-            <a href = "/"><img src = "../static/images/logo.jpg"/></a>
-        </div> <!-- hover on the image to log out-->
-        
-        <div class="row" style="padding-top: 25px">
-            <div class = "col-2" style="background-color: transparent;">
-                <p class = "p_portfolio"  style="justify-self: left;">User_x</p>
-            </div>
-            <div class = "col text-right" style="background-color: transparent;"></div>
-
-            <div class = "col text-center">
-                <button type="button" class="btn btn-outline-light border-light" style=" background-color: transparent;" onclick=" 'CHIAMA FUNZIONE JS - no apici singoli'">place order</button>
-            </div>
-
-            <div class = "col text-right" style="background-color: transparent;"></div>
-            <div class = "col text-left" style="background-color: transparent;"></div>
+  <div class="container-fluid portfolio"> <!-- vedi se funziona senza flex-->
+    <div class = "header">
+        <a href = "/"><img src = "../static/images/logo.jpg"/></a>
+    </div> <!-- hover on the image to log out-->
+      
+    <div class="row" style="padding-top: 25px">
+        <div class = "col" style="background-color: rgba(255, 0, 0, 0);">
+            <p class = "p_portfolio"  style="justify-self: left;">{{ user.username }}</p>
         </div>
-    
-            
-        <div class="grid-container container-fluid" style=" padding-top: 20px;">
-            <div class = "grid-item container-fluid" style= "">
+
+        
+        <div class = "col text-right"  style="background-color: rgba(255, 127, 80, 0);">
+            <button type="button" class="btn btn-outline-light border-light" data-toggle="modal" data-target="#buy_form" style=" background-color: transparent; color: rgba(0, 255, 179, 0.664); border-color: rgba(0, 255, 179, 0.664) !important;">Buy order</button>
+        </div>
+        
+        <div class = "col text-center"  style="background-color: rgba(100, 148, 237, 0);">
+            <button type="button" class="btn btn-outline-light border-light" data-toggle="modal" data-target="#sell_form" style=" background-color: transparent; color: #ff0055a9; border-color: #ff0055a9 !important;" >Sell order</button>
+        </div>
+
+       
+        <div class = "col-md-3 text-right" style="background-color: rgba(255, 0, 0, 0);">
                 
-            </div>
-            <div class = "grid-item container-fluid" style= "">
-            </div>
-            <div class = "grid-item container-fluid" style= "">
-            </div>
-            <div class = "grid-item container-fluid" style= "">
+            <div class="input-group">
+                <div class="form-outline">
+                <input id="search-input" type="search" id="form1" class="form-control  text_form" style= "height: 35px; width: 6.5cm; background-color: transparent;" placeholder="Explore cryptocurrencies"/>
+                </div>
+                <button id="search-button" type="button" class="btn btn-outline-light border-light" style=" background-color: transparent; height: 35px; width:80px;">search</button>
             </div>
         </div>
 
+        <div class = "col text-left" style="background-color: rgba(0, 255, 242, 0);">
+            <li class = "" style="float: left; padding-top: 0.2cm; padding-left: 3.3cm;"><a href="/logout">log out</a></li>
+        </div>
+    </div>
+  
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" style= "font-family: 'H3'; font-weight: bold; background-color: #970000; color:rgb(0, 0, 0); border-color: #8a0000;">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %} {% endif %} {% endwith %}
+          
+    <div class="grid-container container-fluid">
+      <div class = "it" style= "overflow:hidden; background-color: transparent; grid-template-rows: 3% 46% 3% 46%; width:100%; height: 100%;">        
+        <span class = "label" style= "font-family: 'TITOLO'; font-size: 18px; color:rgb(0, 0, 0); font-weight: bold; padding-top: 3px; background-color: rgb(255, 255, 255);">BUYS</span>
+        <div class = "e intestazione" style= "width: 100% !important; height:100% !important;" >             
+          <table class="table table-sm table-hover table-dark table-borderless t11" id = "t11" ></table>
+        </div>
+        <span class = "label" style= "font-family: 'TITOLO'; font-size: 18px; color:rgb(0, 0, 0); font-weight: bold; padding-top: 3px; background-color: rgb(255, 255, 255);">SELLS</span>
+        <div class = "e intestazione" style= "width: 100% !important; height:100% !important;" >
+          <table class="table table-sm table-hover table-dark table-borderless t11" id = "t12" ></table>
+        </div>     
+      </div>
+
+          
+
+      <div class = "it" style= "overflow:hidden; background-color: transparent; grid-template-rows: 69% 3% 28%; width:100%; height: 100%;">
+          
+        <div class = "e">
+            <svg id = "graph_canvas_buffer" style = "width: 100%; height:100%;"></svg>
+        </div>
+        <span class = "label" style= "font-family: 'TITOLO'; font-size: 18px; color:rgb(0, 0, 0); font-weight: bold; padding-top: 3px; background-color: rgb(255, 255, 255);">MARKET</span>
+        <div class = "e intestazione" style= "width: 100% !important; height:100% !important;" >
+          <table class="table table-sm table-hover table-dark table-borderless t11" id = "t22" ></table>
+
+        </div> 
+          
+      </div>
+
+      <div class = "it" style= "overflow:hidden; background-color: transparent; grid-template-rows: 3% 46% 3% 46%; width:100%; height: 100%;">
+        <span class = "label" style= "font-family: 'TITOLO'; font-size: 18px; color:rgb(0, 0, 0); font-weight: bold; padding-top: 3px; background-color: rgb(255, 255, 255);">MY WALLET</span>
+        <div class = "e intestazione" style= "width: 100% !important; height:100% !important; ">
+          <table class="table table-sm table-hover table-dark table-borderless t11" id = "t31" ></table>
+        </div> 
+        <span class = "label" style= "font-family: 'TITOLO'; font-size: 18px; color:rgb(0, 0, 0); font-weight: bold; padding-top: 3px; background-color: rgb(255, 255, 255);">MY OPS</span>
+        <div class = "e intestazione" style= "width: 100% !important; height:100% !important;">
+          <table class="table table-sm table-hover table-dark table-borderless t11" id = "t32" ></table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal place_orders-->
+    <div class="modal fade" id="buy_form" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+        <div class="modal-dialog " role="document" >
+            <div class="modal-content" style = "background-color: black; color: #ffffff;">
+                <div class="modal-header">
+                    <p class="modal-title h5_homepage" id="modal_label" style="padding-left: 140px;" >Place your order</p>
+                    <button type="button" style= "color: #ffffff; justify-self: right; background-color: transparent;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <form action="/portfolio" method="POST"> 
+                    <div class = "it" style= "overflow:hidden; background-color: transparent; grid-template-columns: 50% 30% ; grid-template-rows: 50% 50%; width:100%; height: 100%; padding-left:2cm;"> 
+                        <div class="form-group">
+                            <label></label>
+                            <input type="text" class="form-control text_form" id="from_crypto" name="from_crypto" aria-describedby="passwordHelp" placeholder="Opening"
+                            style="background-color: transparent; border: 1px, solid, #aaaaaa; ">
+                            <small class="text_form" style= "font-size:10px !important; padding-left: 12px;">FROM CRYPTO</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label></label>
+                            <input type="text" class="form-control text_form" id="to_crypto" name="to_crypto"  aria-describedby="passwordHelp" placeholder="Intended"
+                            style="background-color: transparent; border: 1px, solid, #aaaaaa; margin-left: 0.67cm; ">
+                            <small class="text_form" style= "font-size:10px !important; margin-left: 1cm;">TO CRYPTO</small>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control text_form prc" id="price" name= "price" aria-describedby="emailHelp" placeholder="Price"
+                             style="background-color: transparent; border: 1px, solid, #aaaaaa;">
+                            <small class="text_form" style= "font-size:10px !important; padding-left: 12px;">[USD]</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-control text_form" id="amount" name="amount" aria-describedby="passwordHelp" placeholder="Amount"
+                            onchange="update_total('B')" style="background-color: transparent; border: 1px, solid, #aaaaaa; margin-left: 0.67cm;">
+                            <small class="text_form" style= "font-size:10px !important; margin-left: 1cm;">AMOUNT</small>
+                            
+                            <input id = "tipo"  name = "tipo" value = "buy" style="display: none;">
+                      
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer flex" style= "background-color: rgba(216, 191, 216, 0);"> 
+                        <div class= "mr-auto">
+                            <small class="h5_homepage" style= "font-size:15px !important; margin-left: 1cm; background-color: rgba(153, 205, 50, 0);">TOTAL</small>
+                            <input type="text" class="text_form tot" readonly id = "total1" placeholder="" style=" background-color: rgba(255, 105, 180, 0); font: 15px, white !important;">
+                        </div>
+                        <div style="background-color: rgba(0, 0, 255, 0);"><button type="submit" class="btn btn-outline-light border-light"  type="submit" name="submit" value="Submit">Place order</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="sell_form" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+        <div class="modal-dialog " role="document" >
+            <div class="modal-content" style = "background-color: black; color: #ffffff;">
+                <div class="modal-header">
+                    <p class="modal-title h5_homepage" id="modal_label" style="padding-left: 140px;" >Place your order</p>
+                    <button type="button" style= "color: #ffffff; justify-self: right; background-color: transparent;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <form action="/portfolio" method="POST"> 
+                    <div class = "it" style= "overflow:hidden; background-color: transparent; grid-template-columns: 50% 30% ; grid-template-rows: 50% 50%; width:100%; height: 100%; padding-left:2cm;  padding-right: 0.5cm;"> 
+                        <div class="form-group">
+                            <label></label>
+                            <input type="text" class="form-control text_form" id="from_crypto" name="from_crypto" aria-describedby="passwordHelp" placeholder="Opening"
+                            style="background-color: transparent; border: 1px, solid, #aaaaaa; ">
+                            <small class="text_form" style= "font-size:10px !important; padding-left: 12px; background-color: rgba(0, 255, 255, 0);">FROM CRYPTO</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label></label>
+                            <input type="text" class="form-control text_form" id="to_crypto" name="to_crypto" aria-describedby="passwordHelp" placeholder="Intended"
+                            style="background-color: transparent; border: 1px, solid, #aaaaaa; margin-left: 0.67cm;">
+                            <small class="text_form" style= "font-size:10px !important; margin-left: 1cm;">TO CRYPTO</small>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control text_form prc" id="prices" name= "price" aria-describedby="emailHelp" placeholder="Price"
+                            style="background-color: transparent; border: 1px, solid, #aaaaaa;">
+                            <small class="text_form" style= "font-size:10px !important; padding-left: 12px;">[USD]</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-control text_form" id="amounts" name="amount" aria-describedby="passwordHelp" placeholder="Amount"
+                            onchange="update_total('S')" style="background-color: transparent; border: 1px, solid, #aaaaaa; margin-left: 0.67cm;">
+                            <small class="text_form" style= "font-size:10px !important; margin-left: 1cm;">AMOUNT</small>
+                            <input id = "tipo" name = "tipo" value = "sell" style="display: none;">
+                      
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer flex" style= "background-color: rgba(216, 191, 216, 0);"> 
+                        <div class= "mr-auto">
+                            <small class="h5_homepage"  style= "font-size:15px !important; margin-left: 1cm; background-color: rgba(153, 205, 50, 0);">TOTAL</small>
+                            <input type="text" class="text_form tot" readonly id = "total2" placeholder="" disabled="disabled" style=" background-color: rgba(255, 105, 180, 0); font: 15px, white !important;">
+                        </div>
+                        <div style="background-color: rgba(0, 0, 255, 0);"><button type="submit" class="btn btn-outline-light border-light" type="submit" name="submit">Place order</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type='text/javascript' src='../static/JS/table.js'></script>
+<script src="../static/JS/graph.js"></script>
+<script type='text/javascript'>
+
+    graph("sapienzacoin");
+    create_table("#t11", "rgb(0, 255, 179)", "transactions_buyer"); //metti buys
+    create_table("#t12","#ff0055", "transactions_seller_coinc"); //metti sells
+    create_table_right("#t22", "white", "market", "sapienzacoin");
+
+
+    
+    create_table_right("#t31", "white", "wallet", "me");
+    create_table_right("#t32", "white", "wallet", "transactions_me");
+
+</script>
+
+<script type='text/javascript'>
+
+    $('#search-button').on("click", function(e)
+    {
+       var input = document.getElementById("search-input").value;
+       if(input != ""){
+            $("#t22").empty();
+            create_table_right("#t22", "white", "market", input);
+            graph(input);
+       }
+    });
+    
+</script>
+
+
+<script type='text/javascript'>
+
+    var g_data = "";
+    var g_index = 0;
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "../static/crypto_data/transactions/transactions_buyer.csv",
+            dataType: "text",
+            success: function(data) {
+                g_data = data.split('\n');
+                g_index = 1;
+                setInterval(rolling_table_buys, 1000);
+            }
+        });
+    });
+
+    function rolling_table_buys() {
+
+        var i = g_index;
+        if(i >= g_data.length)
+        {
+            i = 1; g_index = 1;
+        }
+        g_index += 1;
+        var tab = document.getElementById("t11");
+        var elems = g_data[i].split(','); 
         
+        var row = tab.insertRow(1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1); 
+        var cell3 = row.insertCell(2);
+
+        cell1.innerHTML = elems[0];
+        cell2.innerHTML = elems[1];
+        cell3.innerHTML = elems[2];
+
+        cell1.style.color = "rgb(0, 255, 179)";   
+
+    }
+
+
+</script>
+
+
+
+
+<script type='text/javascript'>
+
+    var g_data = "";
+    var g_index = 0;
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "../static/crypto_data/transactions/transactions_seller_coinc.csv",
+            dataType: "text",
+            success: function(data) {
+                g_data = data.split('\n');
+                g_index = 1;
+                setInterval(rolling_table_sells, 700);
+            }
+        });
+    });
+
+    function rolling_table_sells() {
+        var i = g_index;
+        if(i >= g_data.length)
+        {
+            i = 1; g_index = 1;
+        }
+        g_index += 1;
+        var tab = document.getElementById("t12");
+        var elems = g_data[i].split(','); 
+
+        var row = tab.insertRow(1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1); 
+        var cell3 = row.insertCell(2);
+
+        cell1.innerHTML = elems[0];
+        cell2.innerHTML = elems[1];
+        cell3.innerHTML = elems[2];
+
+        cell1.style.color = "#ff0055";   
+
+        }
+</script>
+
+
+
+<script type= "text/javascript">
+
+    function update_total(type) {
+
+        if(type == "B")
+        {
+            var p = parseFloat(document.getElementById("price").value);
+            var q = parseFloat(document.getElementById("amount").value);
+            var tot = -(p*q);
+            
+            $('#total1').val(":  -" + tot.toString());
+
+        }
+        else if(type == "S")
+        {
+            var p = parseFloat(document.getElementById("prices").value);
+            var q = parseFloat(document.getElementById("amounts").value);
+            var tot = (p*q);
+            
+            $('#total2').val(":  +" + tot.toString());
+        }
+
+    
+    };
+
+</script>
+
+
+
+
 </body>
 </html>      
         

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from functools import wraps
 from flask import request, session, Response, render_template, redirect, send_from_directory, abort, flash
 from flask import Flask
@@ -20,8 +18,12 @@ import zlib
 import base64
 import sys
 import zipfile
+from database import *
+import csv
 
 app = Flask(__name__)
+db.app = app
+db.init_app(app)
 
 #flag login
 USERNAME_REGEX = re.compile(r'[0-9a-zA-Z_!@#€\-&+]{4,32}')
@@ -51,41 +53,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-db = SQLAlchemy(app)
+
 Session(app)
-
-
-class User(db.Model):
-    __tablename__ = 'user'
-
-    id       = db.Column(db.Integer,                 primary_key = True, autoincrement = True)
-    username = db.Column(db.String(32),              nullable = False, unique = True)
-    email    = db.Column(db.Text(),                  nullable = False, unique = True)
-    salt     = db.Column(db.String(SALT_LENGTH * 2), nullable = False) #additional security check
-    password = db.Column(db.String(64),              nullable = False)
-    apikey   = db.Column(db.String(256),             nullable = False, unique = True)
-    capital  = db.Column(db.Integer,                 nullable = False)
-
-    #capital va settato dinamicamente attraverso ultima entry di curr_cap in storico
-    #status lo metti nel python di portfolio attraverso capital
-
-    def __str__(self):
-        return 'name: %s\nstatus: %s \ncurrent capital: %d' % (self.username, self.status, self.capital)
-
-
-class Storico(db.Model):
-    __tablename__ = "storico"
-
-    id       = db.Column(db.Integer,                 primary_key = True, autoincrement = True)
-    user_id  = db.Column(db.Integer,                 ForeignKey('user.id'))
-    date     = db.Column(db.DateTime,                default = datetime.datetime.now, nullable = False)
-    product  = db.Column(db.String(256),             nullable = False)
-    price    = db.Column(db.Integer,                 nullable = False) #+ se vendi, - se compri
-    curr_cap = db.Column(db.Integer,                 nullable = False)
-
-    user     = db.relationship('User', foreign_keys = [user_id])
-    #product è foreign key da mercato se lo vogliamo fare
-
 
 
 #authentification decorator
@@ -98,8 +67,6 @@ def require_auth(func):
         user = User.query.filter_by(apikey = session['apikey']).first()
         if user == None:
             return redirect('/')
-        if user.apikey.startswith(APIKEY_INVALID_PREFIX):
-            return redirect('/newpw')
         return func(*args, **kwargs)
     return wrapper
 
@@ -107,6 +74,7 @@ def require_auth(func):
 
 @app.route('/', methods = ['GET'])
 def index(): #se login va a buon fine vado in portfolio, altrimenti ritorno a home
+    print("\n   >>> MINERVA SERVER TRACE: @index\n")
     if 'apikey' in session and User.query.filter_by(apikey = session['apikey']).first() != None:
         return redirect('/portfolio')
     return render_template('index.html')
@@ -114,48 +82,74 @@ def index(): #se login va a buon fine vado in portfolio, altrimenti ritorno a ho
 
 @app.route('/about_us', methods = ['GET']) #pubblica, non richiede autentificazione
 def about_us():
+    print("\n   >>> MINERVA SERVER TRACE: @about_us\n")
     return render_template('about_us.html')
 
 
-@app.route('/portfolio', methods = ['GET'])
+@app.route('/portfolio', methods = ['GET', 'POST'])
 @require_auth
 def portfolio():
-    user = User.query.filter_by(apikey = session['apikey']).first()
-    return render_template('portfolio.html', user = user)
+    if request.method == 'POST':
+        print("\n   >>> MINERVA SERVER TRACE: placing order\n")
+        user = User.query.filter_by(apikey = session['apikey']).first()
+        if(request.form['tipo'] == "sell"):
+            coin_from = request.form['from_crypto']
+            coin_to = request.form['to_crypto']
+            price    = request.form['price']
+            amount  = request.form['amount']
+            sell_fun(user, coin_from, coin_to, price, amount)
 
+        else:
+            if(request.form['tipo'] == "buy"):
+                coin_from = request.form['from_crypto']
+                coin_to = request.form['to_crypto']
+                price    = request.form['price']
+                amount  = request.form['amount']
+                buy_fun(user, coin_from, coin_to, price, amount)
 
-@app.route('/sign_up', methods = ['GET', 'POST'])
-def sign_up():
+        return redirect("/portfolio")
 
     if request.method == 'GET':
-        if 'apikey' in session and User.query.filter_by(apikey = session['apikey']).first() != None:
-            return redirect('/portfolio')
-        else:
-            return render_template('sign_up.html')
+        print("\n   >>> MINERVA SERVER TRACE: @portfolio\n")
+        user = User.query.filter_by(apikey = session['apikey']).first()
 
-    elif request.method == 'POST':
+        wallet_to_csv('static/me.csv', user.id)    
+        transactions_to_csv("static/transactions_me.csv", user.id)
+        return render_template('portfolio.html', user = user)
+
+
+@app.route('/sign_up', methods = ['POST'])
+def sign_up():
+
+    if request.method == 'POST':
         
         username = request.form['username']
         password = request.form['password']
         email    = request.form['email']
         capital  = request.form['capital']
 
+        print("\n   >>> MINERVA SERVER TRACE: @signup, form ok\n")
+
         if len(password) < MIN_PSW_LENGTH:
             flash('Password too short, should be at least %d characters' % MIN_PSW_LENGTH, 'danger')
-            return render_template('sign_up.html')
+            print("\n   >>> MINERVA SERVER TRACE: error, password too short (min 6 chars)\n")
+            return redirect('/')
 
         match = USERNAME_REGEX.match(username)
         if match == None or match.start() != 0 or match.end() != len(username):
             flash(USERNAME_INVALID, 'danger')
-            return render_template('sign_up.html')
+            print("\n   >>> MINERVA SERVER TRACE: error, username invalid\n")
+            return redirect('/')
 
         if User.query.filter_by(username=username).count() > 0:
             flash(USERNAME_TAKEN, 'danger')
-            return render_template('sign_up.html')
+            print("\n   >>> MINERVA SERVER TRACE: error, username taken\n")
+            return redirect('/')
 
         if User.query.filter_by(email=email).count() > 0:
             flash(USER_MAIL_TAKEN, 'danger')
-            return render_template('sign_up.html')
+            print("\n   >>> MINERVA SERVER TRACE: error, email taken\n")
+            return redirect('/')
 
         apikey   = os.urandom(32).hex()
         salt     = os.urandom(SALT_LENGTH)
@@ -166,32 +160,47 @@ def sign_up():
                     salt     = salt.hex(),
                     password = secret,
                     apikey   = apikey,
-                    capital  = 0)
+                    capital  = capital)
         db.session.add(user)
         db.session.commit()
-        return redirect('/login')
+
+        users = User.query.filter_by(username = username)
+        user = users.first()
+        session['apikey'] = user.apikey
+        populate_me(user.id)
+        db.session.commit()
+        print("\n   >>> MINERVA SERVER TRACE: redirecting to PORTFOLIO\n")
+        return redirect('/portfolio')
 
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
+    print("\n   >>> MINERVA SERVER TRACE: @login\n")
     if request.method == 'GET': 
         if 'apikey' in session and User.query.filter_by(apikey = session['apikey']).first() != None:
+            flash("wrong apikey", 'danger')
+            print("\n   >>> MINERVA SERVER TRACE: wrong apikey, redirecting to HOME\n")
             return redirect('/')
         else:
-            return render_template('login.html')
+            print("\n   >>> MINERVA SERVER TRACE: redirecting to PORTFOLIO - solving issues with passing parameters\n")
+            return redirect('/portfolio')
+
     elif request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password']
         match = USERNAME_REGEX.match(username)
         if match == None or match.start() != 0 or match.end() != len(username):
             flash(USERNAME_INVALID, 'danger')
-            return render_template('login.html')
+            print("\n   >>> MINERVA SERVER TRACE: error no such user in db, redirecting to HOME\n")
+            return redirect('/')
 
         users = User.query.filter_by(username = username)
         if users.count() > 1:  # shouldn't be possible due to integrity contraints
             # WTF
+            flash("double user", 'danger')
+            print("\n   >>> MINERVA SERVER TRACE: error double user, redirecting to HOME\n")
             return redirect('/')
 
         
@@ -199,7 +208,8 @@ def login():
 
         if user == None:
             flash(USERNAME_PASSWORD_INVALID, 'danger')
-            return render_template('login.html')
+            print("\n   >>> MINERVA SERVER TRACE: error no user, redirecting to HOME\n")
+            return redirect('/')
             
         salt = bytes.fromhex(user.salt)
         psw  = user.password
@@ -207,12 +217,14 @@ def login():
         input_psw = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 10000).hex()
 
         if input_psw != psw:
+            print("\n   >>> MINERVA SERVER TRACE: error invalid password, redirecting to HOME\n")
             flash(USERNAME_PASSWORD_INVALID, 'danger')
-            return render_template('login.html')
+            return redirect('/')
         
         session['apikey'] = user.apikey
 
-        return redirect('/challenges')
+        print("\n   >>> MINERVA SERVER TRACE: redirecting to PORTFOLIO\n")
+        return redirect('/portfolio')
 
 
 
@@ -221,9 +233,17 @@ def login():
 def logout():
     if 'apikey' in session:
         del session['apikey'] 
+    print("\n   >>> MINERVA SERVER TRACE: leaving page, redirecting to HOME\n")
     return redirect('/')
 
 
-#semmai copia init per creare base mercato, line 797
 if __name__ == '__main__':
+    
+    db.drop_all()
+    print("\n   >>> MINERVA SERVER TRACE: dropping DB\n")
+    db.create_all()
+    populate_moneta()
+    db.session.commit()
+    print("\n   >>> MINERVA SERVER TRACE: DB on and populated\n")
+    print("\n   >>> MINERVA SERVER TRACE: MTG website is online!\n")
     app.run('0.0.0.0', 5005, debug=True)

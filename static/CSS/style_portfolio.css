@@ -1,119 +1,186 @@
 @font-face {
-    font-family: TITOLO;
-    src: url('../fonts/titolo.ttf')  format('truetype');
+  font-family: TITOLO;
+  src: url('../fonts/titolo.ttf')  format('truetype');
 }
 
 @font-face {
-    font-family: PAR;
-    src: url('../fonts/morn.otf')  format('opentype');
+  font-family: PAR;
+  src: url('../fonts/morn.otf')  format('opentype');
 }
 
 @font-face {
-    font-family: H3;
-    src: url('../fonts/GOTHIC.TTF')  format('truetype');
+  font-family: H3;
+  src: url('../fonts/GOTHIC.TTF')  format('truetype');
 }
+
+.modal-backdrop{
+  background-color: rgb(100, 100, 100);
+}
+
 
 .header img{
-    float: left;
-    width: 70px;
-    height: 80px;
-    background: #000000;
+  float: left;
+  width: 70px;
+  height: 80px;
+  background: #000000;
 }
 
 .h1_portfolio {
-    font-family: "TITOLO"; /* non prende i font, che palle*/
-    font-style: normal;
-    color: #ffffff;
-    font-size: 6vw;
+  font-family: "TITOLO"; /* non prende i font, che palle*/
+  font-style: normal;
+  color: #ffffff;
+  font-size: 6vw;
 }
 
 
 .h3_portfolio {
-    font-family: "PAR";
-    font-style: normal;
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 25px;
+  font-family: "PAR";
+  font-style: normal;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 25px;
+}
+
+.h5_homepage {
+  font-family: "PAR";
+  font-style: normal;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 25px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
 }
 
 
 .p_portfolio {
-    font-family: "PAR";
-    font-style: normal;
-    text-align: justify;
-    color: #ffffff;
-    font-size: 20px;
+  font-family: "PAR";
+  font-style: normal;
+  text-align: justify;
+  color: #ffffff;
+  font-size: 20px;
 }
-
 
 .body_portfolio{
-    background-color: #000000;
+  background-color: #000000;
+}
+
+#search::-webkit-search-cancel-button{
+  color: #aaaaaa !important;
+  background-color: white !important;    
+} 
+
+.text_form {
+  border: none;
+  font-size: 17px;
+  color: white;
+  font-family: "PAR";
+  font-style: normal;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #aaaaaa;
+  font-weight: bold !important;
+
+}
+
+
+.form-control:focus {
+  border-color: #aaaaaa;
+  color: #aaaaaa;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #aaaaaa;
+  font-weight: bold !important;
 }
 
 
 
 
-#demo {
-    height: 400px;
-    width: 100%;
-    overflow: hidden;    
-}
 
-
-
-.carousel-inner > .carousel-item > .img-fluid, .carousel-inner > .item > a > img {
-    width: 100%;
-}
 
 .grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
-    background-color: transparent;
-    height: 100vh;
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  background-color: transparent;
+  height: 88.5vh;
+  /*border: 3px solid thistle;*/
 }
+
+
+.e{
+  /**/
+}
+
+.it{
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+
+.intestazione{
+  overflow: auto;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #222222;
+}
+
+/*
+tr:nth-child(odd) {
+  color: rgb(0, 255, 179);
+
+  }
+
+tr:nth-child(even) {
+color: #ff0055;
+
+}
+
+*/
+
+.t11{
+  width: 100% !important;
+  height:100% !important;
+  background-color: transparent;
+  font-size: 13px;
+  color: white;
+  font-family: 'H3';
   
-.grid-item {
-background-color: transparent;
-border: 15px solid #272727;
-font-size: 20px;
-color: white
 }
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgb(255, 255, 255);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #ffffff31;
+  -webkit-box-shadow: inset 0 0 6px rgba(90,90,90,0.7);
+}
+
 
 /*NAV BAR*/
+li a { /*testo nei blocchi*/
+  text-decoration: none;
+  font-family: "PAR";
+  font-style: normal;
+  color: #ffffff;
+  font-size: 20px;
+}
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: transparent;
-  }
-  
-  li { /*questo colora le barre*/
-    float: left;
-    border-right:1px solid #ffffff;
-  }
-  
-  li:last-child {
-    border-right: none;
-  }
-  
-  li a { /*testo nei blocchi*/
-    padding: 14px 16px;
-    text-decoration: none;
-    font-family: "PAR";
-    font-style: normal;
-    text-align: justify;
-    color: #ffffff;
-    font-size: 20px;
-  }
-  
 li a:hover:not(.active) {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .btn:hover{
-    background-color: white !important;
-    color: black;
-    border-color: white;
+  background-color: white !important;
+  color: black;
+  border-color: white;
 }
